@@ -1,0 +1,17 @@
+version: '3.1'
+services:
+  ports-tide-schedule-app:
+    image: maven:3.8.2-jdk-11
+    container_name: 'ports-tide-schedule-app'
+    command: tail -F /dev/null
+    working_dir: /opt/app
+    volumes:
+      - ./:/opt/app
+    ports:
+      - '8081:8080'
+    networks:
+      - ports-tide-schedule-network
+
+networks:
+  ports-tide-schedule-network:
+    driver: bridge
