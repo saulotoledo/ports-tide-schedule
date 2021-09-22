@@ -1,5 +1,6 @@
 package com.ports.tide.api.controllers;
 
+import com.ports.tide.api.dtos.TidesStatistics;
 import com.ports.tide.api.projections.TideSummaryEntry;
 import com.ports.tide.api.projections.WeeklyReportEntry;
 import com.ports.tide.api.services.TidesService;
@@ -42,5 +43,15 @@ public class TidesController {
     @GetMapping(value = "/report", produces = MediaType.APPLICATION_JSON_VALUE)
     public Page<WeeklyReportEntry> getReport(Pageable pageable) {
         return this.tidesService.getWeeklyReport(pageable);
+    }
+
+    /**
+     * Returns statistics for each tide type.
+     *
+     * @return Statistics for each tide type.
+     */
+    @GetMapping(value = "/stats", produces = MediaType.APPLICATION_JSON_VALUE)
+    public TidesStatistics getStatistics() {
+        return this.tidesService.getStatistics();
     }
 }

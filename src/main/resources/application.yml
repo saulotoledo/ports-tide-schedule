@@ -12,3 +12,8 @@ spring:
           time_zone: "UTC"
     hibernate:
       ddl-auto: "update"
+
+tides:
+  high:
+    shipments:
+      threshold: 4.9

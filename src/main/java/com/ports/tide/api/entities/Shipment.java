@@ -25,6 +25,6 @@ public class Shipment extends IdentifiableEntity {
      * The order items.
      */
     @ManyToOne()
-    @JoinColumn(name = "tideId", referencedColumnName = "id")
+    @JoinColumn()
     private Tide tide;
 }

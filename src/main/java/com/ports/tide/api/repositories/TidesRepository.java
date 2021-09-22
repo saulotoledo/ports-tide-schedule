@@ -1,13 +1,17 @@
 package com.ports.tide.api.repositories;
 
 import com.ports.tide.api.entities.Tide;
+import com.ports.tide.api.enums.TideType;
 import com.ports.tide.api.projections.TideSummaryEntry;
+import com.ports.tide.api.projections.TidesGeneralStatisticsEntry;
 import com.ports.tide.api.projections.WeeklyReportEntry;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * Repository for string entries.
@@ -35,4 +39,33 @@ public interface TidesRepository extends JpaRepository<Tide, Long> {
         + "COUNT(s.id) AS numberOfShipments, SUM(s.quantity) AS totalQuantity FROM Tide t "
         + "LEFT JOIN t.shipments s GROUP BY week, year")
     Page<WeeklyReportEntry> findWeeklyReport(Pageable pageable);
+
+    /**
+     * Returns general statistics for each tide type.
+     *
+     * @return General statistics for each tide type.
+     */
+    @Query(value = "SELECT t.type AS tideType, AVG(t.amplitude) AS amplitudeAverage FROM Tide t GROUP BY t.type")
+    List<TidesGeneralStatisticsEntry> computeGeneralStatistics();
+
+    /**
+     * Returns the number of tides of a given type and above the informed threshold.
+     *
+     * @param type The type of the tides to filter.
+     * @param threshold The threshold to use.
+     * @return The number of tides according to the informed details.
+     */
+    @Query(value = "SELECT COUNT(DISTINCT t.id) FROM Tide t WHERE t.type = ?1 AND t.amplitude > ?2")
+    Integer countByTideTypeWithAmplitudeGreaterThan(TideType type, Float threshold);
+
+    /**
+     * Returns the number of tides of a given type and above the informed threshold assigned for shipments.
+     *
+     * @param type The type of the tides to filter.
+     * @param threshold The threshold to use.
+     * @return The number of tides according to the informed details.
+     */
+    @Query(value = "SELECT COUNT(DISTINCT s.tide) FROM Tide t LEFT JOIN t.shipments s "
+        + "WHERE t.type = ?1 AND t.amplitude > ?2")
+    Integer countAssignedShipmentsByTideTypeWithAmplitudeGreaterThan(TideType type, Float threshold);
 }
