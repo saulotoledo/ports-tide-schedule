@@ -1,0 +1,14 @@
+spring:
+  datasource:
+    username: "db_user"
+    password: "db_password"
+    url: "jdbc:mysql://ports-tide-schedule-db:3306/tidesdb"
+
+  jpa:
+    show-sql: false
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: "UTC"
+    hibernate:
+      ddl-auto: "update"
