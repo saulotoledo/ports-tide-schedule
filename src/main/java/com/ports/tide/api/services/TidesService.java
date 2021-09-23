@@ -74,11 +74,11 @@ public class TidesService {
         }
 
         ts.getHigh().getForShipments().setTotal(
-            this.repository.countByTideTypeWithAmplitudeGreaterThan(TideType.HIGH, highTidesShipmentsThreshold)
+            this.repository.countByTideTypeWithAmplitudeGreaterThan(TideType.HIGH, this.highTidesShipmentsThreshold)
         );
         ts.getHigh().getForShipments().setAssigned(
             this.repository.countAssignedShipmentsByTideTypeWithAmplitudeGreaterThan(
-                TideType.HIGH, highTidesShipmentsThreshold
+                TideType.HIGH, this.highTidesShipmentsThreshold
             )
         );
 

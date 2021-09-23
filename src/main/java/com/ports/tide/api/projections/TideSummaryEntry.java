@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.time.LocalDateTime;
 
+
 /**
  * Database projection interface for a tide summary entry.
  * A tide summary entry contains a flat and summarized representation of a tide.
