@@ -35,9 +35,13 @@ public interface TidesRepository extends JpaRepository<Tide, Long> {
      * @param pageable Object containing pagination information.
      * @return A list of values matching the informed string.
      */
-    @Query(value = "SELECT EXTRACT(YEAR FROM t.time) AS year, EXTRACT(WEEK FROM t.time) AS week, "
-        + "COUNT(s.id) AS numberOfShipments, SUM(s.quantity) AS totalQuantity FROM Tide t "
-        + "LEFT JOIN t.shipments s GROUP BY week, year")
+    @Query(
+        value = "SELECT EXTRACT(YEAR FROM t.time) AS year, EXTRACT(WEEK FROM t.time) AS week, "
+            + "COUNT(s.id) AS numberOfShipments, SUM(s.quantity) AS totalQuantity FROM tides t "
+            + "LEFT JOIN shipments s ON s.tide_id = t.id GROUP BY 1, 2",
+        countQuery = "SELECT COUNT(DISTINCT EXTRACT(YEAR FROM t.time), EXTRACT(WEEK FROM t.time)) FROM tides t",
+        nativeQuery = true
+    )
     Page<WeeklyReportEntry> findWeeklyReport(Pageable pageable);
 
     /**
